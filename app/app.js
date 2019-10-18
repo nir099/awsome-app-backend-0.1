@@ -2,22 +2,37 @@ var createError = require('http-errors');
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var passport = require('passport');
+var bodyParser = require('body-parser');
+
+var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 var app = express();
+
+require('./database');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+app.use(cors());
+
+app.use(passport.initialize());
+require('./config/passport')(passport); // pass passport for configuration
 
 app.use('/api', indexRouter);
+app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function(_req, _res, next) {
   next(createError(404));
 });
 

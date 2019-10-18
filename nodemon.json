@@ -1,0 +1,6 @@
+{
+    "env" : {
+        "MONGO_CLIENT_PASSSWORD" : "gift@12345678",
+        "JWT_SECRET": "lkjsffjnwkji3248yfhw89"
+    }
+}
